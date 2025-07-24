@@ -131,6 +131,7 @@ fig_total_counts.update_layout(
 )
 
 config = {
+    'scrollZoom': True,
     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
 }
 

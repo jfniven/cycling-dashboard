@@ -2,12 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# BL tools
-import sys
-
-sys.path.append("/Users/johnniven/Documents/Home/Python/JN Tools")
-import JN_tools as jn
-
 folder = "/Users/johnniven/Documents/Home/Python/Cycling Counter/"
 
 st.set_page_config(layout="wide")

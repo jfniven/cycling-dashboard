@@ -132,6 +132,7 @@ fig_total_counts.update_layout(
 
 config = {
     'scrollZoom': False,
+     'modeBarButtonsToRemove': ['zoom', 'pan'],
     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
 }
 

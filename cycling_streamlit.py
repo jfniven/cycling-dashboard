@@ -125,6 +125,7 @@ fig_total_counts.update_layout(
     margin=dict(l=0, r=0, t=0, b=0),
     font_color="black",
 )
+)
 
 config = {
     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}

@@ -333,6 +333,15 @@ fig_histories.update_layout(
                 size = 20
             ),
     ),
+    showlegend=True,
+    legend=dict(
+        title=dict(text="Route", font_size=20),
+        yanchor="top",
+        y=1,
+        xanchor="left",
+        x=1,
+        font=dict(size=16),
+    ),
     autosize=False,
     width=1000,
     height=600,

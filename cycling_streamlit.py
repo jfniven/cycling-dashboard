@@ -751,7 +751,7 @@ color="direction",
 )
 
 # Axis formatting
-fig_total_counts.update_layout(
+fig_hourly.update_layout(
     dict(
         xaxis=dict(
             title=dict(

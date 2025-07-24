@@ -70,13 +70,13 @@ channel_color_dict = dict(zip(channels,px.colors.qualitative.Alphabet[0:len(chan
 ####### Plots
 # st.subheader(f"Overall network counts")
 
-# date_format = st.radio(
-#     "Select date group format",
-#     ["Daily", "Monthly", "Yearly"],
-#     key="count_totals",
-#     index=1,
-#     horizontal=True,
-# )
+date_format = st.radio(
+    "Select date group format",
+    ["Daily", "Monthly", "Yearly"],
+    key="count_totals",
+    index=1,
+    horizontal=True,
+)
 
 if date_format == "Daily":
     df_plot = df_ymd

@@ -481,351 +481,449 @@ else:
     df_channel = df_channel_y.query("channel == @selected_channel")
     x_var = "y"
 
-# fig_channel_counts = px.bar(
-#     df_channel,
-#     x=x_var,
-#     y="total_trips",
-#     hover_data=x_var,
-# )
+fig_channel_counts = px.bar(
+    df_channel,
+    x=x_var,
+    y="total_trips",
+    hover_data=x_var,
+)
 
-# if date_format_channel == "Yearly ":
-#     # Axis formatting
-#     fig_channel_counts.update_layout(
-#         xaxis=dict(
-#             title="Date",
-#             titlefont_size=20,
-#             tickfont_size=20,
-#             tickangle=0,
-#             tickformat="array",
-#             tickvals=df_channel.y.unique(),
-#             ticktext=df_channel.y.unique(),
-#         )
-#     )
-# else:
-#     fig_channel_counts.update_layout(
-#         xaxis=dict(
-#             title="Date",
-#             titlefont_size=20,
-#             tickfont_size=20,
-#             tickangle=0,
-#             tickformat="%b\n%Y",
-#         )
-#     )
+if date_format_channel == "Yearly ":
 
-# fig_channel_counts.update_layout(
-#     yaxis=dict(
-#         title=f"Total {date_format.lower()} count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#     ),
-#     width=500,
-#     height=400,
-#     margin=dict(l=40, r=40, t=0, b=40),
-#     font_color="black",
-# )
+    # Axis formatting
+    fig_channel_counts.update_layout(
+        dict(
+            xaxis=dict(
+                title=dict(
+                    text = "Date",
+                    font=dict(
+                        size = 20
+                    )
+                ),
+                tickfont = dict(
+                    size = 20
+                ),
+                tickformat="array",
+                tickvals=df_channel.y.unique(),
+                ticktext=df_channel.y.unique(),
+            ),
+            autosize=False,
+            width=1000,
+            height=600,
+            margin=dict(l=0, r=0, t=0, b=0),
+            font_color="black",
+        )
+    )
 
-# fig_channel_counts.update_traces(
-#     # marker_color="red",
-# )
+else:
+    fig_channel_counts.update_layout(
+        dict(
+            xaxis=dict(
+                title=dict(
+                    text = "Date",
+                    font=dict(
+                        size = 20
+                    )
+                ),
+                tickfont = dict(
+                    size = 20
+                ),
+                tickformat="%b\n%Y",
+            ),
+            autosize=False,
+            width=1000,
+            height=600,
+            margin=dict(l=0, r=0, t=0, b=0),
+            font_color="black",
+        )
+    )
+
+fig_channel_counts.update_layout(
+        dict(
+            yaxis=dict(
+                title=dict(
+                    text = f"Total {date_format.lower()} count",
+                    font= dict(
+                        size = 20
+                    ),
+                ),
+                tickfont = dict(
+                    size = 20
+                ),
+        ),
+        autosize=False,
+        width=500,
+        height=400,
+        margin=dict(l=0, r=0, t=0, b=0),
+        font_color="black",
+        )
+    )
+
 
 # ####################
-# fig_direction_counts = px.line(
-#     df_direction_ymd.query("channel == @selected_channel"),
-#     x="weekday",
-#     y="total_trips",
-#     color="direction",
-# )
+fig_direction_counts = px.line(
+    df_direction_ymd.query("channel == @selected_channel"),
+    x="weekday",
+    y="total_trips",
+    color="direction",
+)
 
-# # Axis formatting
-# fig_direction_counts.update_layout(
-#     xaxis=dict(
-#         title="Day of Week",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=0,
-#     ),
-#     yaxis=dict(
-#         title=f"Total {date_format.lower()} count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         # range=[0, 200],
-#     ),
-#     autosize=True,
-#     width=500,
-#     height=400,
-#     margin=dict(l=40, r=40, t=0, b=40),
-#     # font_family="Open Sans",
-#     font_color="black",
-# )
+# Axis formatting
+fig_direction_counts.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text ="Day of week",
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+        ),
+        yaxis=dict(
+            title=dict(
+                text = f"Total {date_format.lower()} count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+    ),
+    autosize=False,
+    width=500,
+    height=400,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
 
-# fig_channel_counts.update_traces(
-#     # marker_color="red",
-# )
+fig_channel_counts.update_traces(
+    # marker_color="red",
+)
+
+##################################################
+# MEAN DAILY PERCENTAGES
+df_week_sum = (
+    df.query("channel == @selected_channel & ym >= '2024-07'")
+    .groupby(by=["y", "week", "weekday"], as_index=False)
+    .agg(total_trips=("trips", "sum"))
+)
+
+df_week_sum["weekly_percent"] = df_week_sum.groupby(by=["y", "week"])[
+    "total_trips"
+].transform(lambda x: x / x.sum())
+
+fig_weekly = px.bar(
+    df_week_sum.groupby(by=["weekday"], as_index=False).agg(
+        weekly_mean=("weekly_percent", "mean")
+    ),
+    x="weekday",
+    y="weekly_mean",
+    text_auto="0.1%",
+)
+
+# Axis formatting
+fig_weekly.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text = "Day of week",
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickangle=30,
+            tickmode="array",
+            tickvals=[1, 2, 3, 4, 5, 6, 7],
+            ticktext=[
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+        ],
+            tickfont = dict(
+                size = 20
+            ),
+        ),
+        yaxis=dict(
+            title=dict(
+                text = "Average percent of weekly count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+            tickformat=".0%",
+    ),
+    autosize=False,
+    width=500,
+    height=400,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
+
+fig_weekly.update_traces(
+    textposition="inside",
+    textfont_size=14,
+)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.plotly_chart(fig_channel_counts, on_select="ignore")
+with col2:
+
+    df_display = (
+        df_channel_combined.query("channel == @selected_channel")
+        .drop(columns=["channel", "y", "m", "weekday", "ym", "year", "month", "day"])
+        .rename(columns={"ymd": "Date"})
+        .set_index("Date")
+    )
+
+    df_display.columns = df_display.columns.str.title().str.replace("_", " ")
+    st.write(df_display)
 
 # ##################################################
-# # MEAN DAILY PERCENTAGES
-# df_week_sum = (
-#     df.query("channel == @selected_channel & ym >= '2024-07'")
-#     .groupby(by=["y", "week", "weekday"], as_index=False)
-#     .agg(total_trips=("trips", "sum"))
-# )
 
-# df_week_sum["weekly_percent"] = df_week_sum.groupby(by=["y", "week"])[
-#     "total_trips"
-# ].transform(lambda x: x / x.sum())
+col1, col2 = st.columns(2)
 
-# fig_weekly = px.bar(
-#     df_week_sum.groupby(by=["weekday"], as_index=False).agg(
-#         weekly_mean=("weekly_percent", "mean")
-#     ),
-#     x="weekday",
-#     y="weekly_mean",
-#     text_auto="0.1%",
-# )
+#### Directionality
+with col1:
+    st.subheader("Average percent of weekly count by day of week")
+    st.plotly_chart(fig_weekly, on_select="ignore")
 
-# fig_weekly.update_layout(
-#     xaxis=dict(
-#         title="Day of week",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=30,
-#         tickmode="array",
-#         tickvals=[1, 2, 3, 4, 5, 6, 7],
-#         ticktext=[
-#             "Monday",
-#             "Tuesday",
-#             "Wednesday",
-#             "Thursday",
-#             "Friday",
-#             "Saturday",
-#             "Sunday",
-#         ],
-#     ),
-#     yaxis=dict(
-#         title=f"Average percent of weekly count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickformat=".0%",
-#     ),
-#     width=500,
-#     height=400,
-#     # template="plotly_white",
-#     margin=dict(l=40, r=40, t=0, b=40),
-#     # font_family="Open Sans",
-#     font_color="black",
-# )
+# MEAN HOURLY PERCENTAGES
+df_channel_hour = df.query("channel == @selected_channel & ym >= '2024-07'")
 
-# fig_weekly.update_traces(
-#     textposition="inside",
-#     textfont_size=14,
-# )
+with col2:
 
-# col1, col2 = st.columns(2)
+    st.subheader("Average percent of daily count by hour of day")
 
-# with col1:
-#     st.plotly_chart(fig_channel_counts, on_select="ignore")
-# with col2:
+    option_map = {
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thursday",
+        5: "Friday",
+        6: "Saturday",
+        7: "Sunday",
+    }
+    selected_days = st.pills(
+        "Select day(s) of the week",
+        options=option_map.keys(),
+        format_func=lambda option: option_map[option],
+        selection_mode="multi",
+        default=[1, 2, 3, 4, 5],
+    )
 
-#     df_display = (
-#         df_channel_combined.query("channel == @selected_channel")
-#         .drop(columns=["channel", "y", "m", "weekday", "ym", "year", "month", "day"])
-#         .rename(columns={"ymd": "Date"})
-#         .set_index("Date")
-#     )
+    df_hour_sum = (
+        df_channel_hour.query("weekday in @selected_days")
+        .groupby(by=["y", "weekday", "hour", "direction"], as_index=False)
+        .agg(total_trips=("trips", "sum"))
+    )
 
-#     df_display.columns = df_display.columns.str.title().str.replace("_", " ")
-#     st.write(df_display)
+    # Don't want to group by direction, want to normalize to total number of trips (both directions). This highlights routes with asymmetric counts.
+    df_hour_sum["hourly_percent"] = df_hour_sum.groupby(by=["weekday"])[
+        "total_trips"
+    ].transform(lambda x: x / x.sum())
 
-# ##################################################
+    df_hour_mean = df_hour_sum.groupby(by=["direction", "hour"], as_index=False).agg(
+        hourly_mean=("hourly_percent", "mean")
+    )
 
-# col1, col2 = st.columns(2)
+    fig_hourly = px.line(
+        df_hour_mean,
+        x="hour",
+        y="hourly_mean",
+        markers=True,
+        color="direction",
+    )
 
-# #### Directionality
-# with col1:
-#     st.subheader("Average percent of weekly count by day of week")
-#     st.plotly_chart(fig_weekly, on_select="ignore")
+# Axis formatting
+fig_total_counts.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text = "Hour of Day",
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+            tickmode="array",
+            tickvals=[0, 3, 6, 9, 12, 15, 18, 21],
+            ticktext=[
+                "12 AM",
+                "3 AM",
+                "6 AM",
+                "9 AM",
+                "12 PM",
+                "3 PM",
+                "6 PM",
+                "9 PM",
+            ],
+        ),
+        yaxis=dict(
+            title=dict(
+                text = "Average percent of daily count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+            tickformat=".0%",
+            range=[0, 0.1],
+    ),
+    legend=dict(
+        title=dict(text="Direction", font_size=20),
+        yanchor="top",
+        y=1,
+        xanchor="right",
+        x=1,
+        font=dict(size=16),
+        ),
+    autosize=False,
+    width=500,
+    height=400,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
 
-# # MEAN HOURLY PERCENTAGES
-# df_channel_hour = df.query("channel == @selected_channel & ym >= '2024-07'")
-
-# with col2:
-
-#     st.subheader("Average percent of daily count by hour of day")
-
-#     option_map = {
-#         1: "Monday",
-#         2: "Tuesday",
-#         3: "Wednesday",
-#         4: "Thursday",
-#         5: "Friday",
-#         6: "Saturday",
-#         7: "Sunday",
-#     }
-#     selected_days = st.pills(
-#         "Select day(s) of the week",
-#         options=option_map.keys(),
-#         format_func=lambda option: option_map[option],
-#         selection_mode="multi",
-#         default=[1, 2, 3, 4, 5],
-#     )
-
-#     df_hour_sum = (
-#         df_channel_hour.query("weekday in @selected_days")
-#         .groupby(by=["y", "weekday", "hour", "direction"], as_index=False)
-#         .agg(total_trips=("trips", "sum"))
-#     )
-
-#     # Don't want to group by direction, want to normalize to total number of trips (both directions). This highlights routes with asymmetric counts.
-#     df_hour_sum["hourly_percent"] = df_hour_sum.groupby(by=["weekday"])[
-#         "total_trips"
-#     ].transform(lambda x: x / x.sum())
-
-#     df_hour_mean = df_hour_sum.groupby(by=["direction", "hour"], as_index=False).agg(
-#         hourly_mean=("hourly_percent", "mean")
-#     )
-
-#     fig_hourly = px.line(
-#         df_hour_mean,
-#         x="hour",
-#         y="hourly_mean",
-#         markers=True,
-#         color="direction",
-#     )
-
-#     fig_hourly.update_layout(
-#         xaxis=dict(
-#             title="Hour of day",
-#             titlefont_size=20,
-#             tickfont_size=20,
-#             tickangle=0,
-#             tickmode="array",
-#             tickvals=[0, 3, 6, 9, 12, 15, 18, 21],
-#             ticktext=[
-#                 "12 AM",
-#                 "3 AM",
-#                 "6 AM",
-#                 "9 AM",
-#                 "12 PM",
-#                 "3 PM",
-#                 "6 PM",
-#                 "9 PM",
-#             ],
-#         ),
-#         yaxis=dict(
-#             title=f"Average percent of daily count",
-#             titlefont_size=20,
-#             tickfont_size=20,
-#             tickformat=".0%",
-#             range=[0, 0.1],
-#         ),
-#         legend=dict(
-#             title=dict(text="Direction", font_size=20),
-#             yanchor="top",
-#             y=1,
-#             xanchor="right",
-#             x=1,
-#             font=dict(size=16),
-#         ),
-#         width=500,
-#         height=400,
-#         margin=dict(l=40, r=40, t=0, b=40),
-#         font_color="black",
-#     )
-
-#     st.plotly_chart(fig_hourly, on_select="ignore")
+    st.plotly_chart(fig_hourly, on_select="ignore")
 
 # ##############################
 
-# fig_temp_counts = px.scatter(
-#     df_channel_combined.query(
-#         "channel == @selected_channel & total_trips > 0 & y>= 2024 & total_rain == 0 & total_snow == 0 & total_precip == 0 & snow_on_ground == 0"
-#     ),
-#     x="mean_temp",
-#     y="total_trips",
-# )
+fig_temp_counts = px.scatter(
+    df_channel_combined.query(
+        "channel == @selected_channel & total_trips > 0 & y>= 2024 & total_rain == 0 & total_snow == 0 & total_precip == 0 & snow_on_ground == 0"
+    ),
+    x="mean_temp",
+    y="total_trips",
+)
 
-# # Axis formatting
-# fig_temp_counts.update_layout(
-#     xaxis=dict(
-#         title="Mean daily temperature",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=0,
-#     ),
-#     yaxis=dict(
-#         title=f"Total daily count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#     ),
-#     autosize=False,
-#     width=1000,
-#     height=600,
-#     margin=dict(l=0, r=0, t=0, b=0),
-#     font_color="black",
-# )
+# Axis formatting
+fig_total_counts.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text = "Mean daily temperature",
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+        ),
+        yaxis=dict(
+            title=dict(
+                text = "Total daily count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+    ),
+    autosize=False,
+    width=500,
+    height=400,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
 
-# config = {
-#     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
-# }
+config = {
+    "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
+}
 
 # ##########################################################################################
-# # Rain
+# Rain
 
-# ####### Plots
-# st.divider()
+####### Plots
+st.divider()
 
-# fig_rain_counts = px.scatter(
-#     df_channel_combined.query(
-#         "channel == @selected_channel & total_trips > 0 & y>= 2024 & total_rain != 0 & mean_temp >=0"
-#     ),
-#     x="total_rain",
-#     y="total_trips",
-#     color="mean_temp",
-# )
+fig_rain_counts = px.scatter(
+    df_channel_combined.query(
+        "channel == @selected_channel & total_trips > 0 & y>= 2024 & total_rain != 0 & mean_temp >=0"
+    ),
+    x="total_rain",
+    y="total_trips",
+    color="mean_temp",
+)
 
-# # Axis formatting
-# fig_rain_counts.update_layout(
-#     xaxis=dict(
-#         title="Total daily rain (mm)",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=0,
-#     ),
-#     yaxis=dict(
-#         title=f"Total daily count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#     ),
-#     coloraxis_colorbar=dict(
-#         title="Mean temp",
-#     ),
-#     autosize=False,
-#     width=1000,
-#     height=600,
-#     margin=dict(l=0, r=0, t=0, b=0),
-#     font_color="black",
-# )
+# Axis formatting
+fig_total_counts.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text = "Total daily rain (mm)",
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+        ),
+        yaxis=dict(
+            title=dict(
+                text = "Total daily count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+    ),
+    coloraxis_colorbar=dict(
+        title="Mean temp",
+    ),
+    autosize=False,
+    width=1000,
+    height=600,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
 
-# config = {
-#     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
-# }
+config = {
+    "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
+}
 
-# st.header("Weather")
+st.header("Weather")
 
-# col1, col2 = st.columns(2)
+col1, col2 = st.columns(2)
 
-# with col1:
-#     st.subheader(
-#         f"Total daily count vs. mean daily temperature (days with no precipitation since 2024)"
-#     )
-#     st.plotly_chart(
-#         fig_temp_counts, on_select="ignore", use_container_width=True, config=config
-#     )
-# with col2:
-#     st.subheader(f"Total daily counts vs. daily rain (since 2024)")
-#     st.plotly_chart(
-#         fig_rain_counts, on_select="ignore", use_container_width=True, config=config
-#     )
+with col1:
+    st.subheader(
+        f"Total daily count vs. mean daily temperature (days with no precipitation since 2024)"
+    )
+    st.plotly_chart(
+        fig_temp_counts, on_select="ignore", use_container_width=True, config=config
+    )
+with col2:
+    st.subheader(f"Total daily counts vs. daily rain (since 2024)")
+    st.plotly_chart(
+        fig_rain_counts, on_select="ignore", use_container_width=True, config=config
+    )
 
 
 # ####### Data Exports

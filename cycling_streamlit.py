@@ -12,8 +12,8 @@ st.set_page_config(layout="wide")
 @st.cache_data
 def get_data():
 
-    DATA_FILENAME = Path(__file__).parent/'data/clean_cycle_data.csv'
-    df = pd.read_csv(DATA_FILENAME)
+    DATA_FILENAME = Path(__file__).parent/'data/clean_cycle_data.feather'
+    df = pd.read_feather(DATA_FILENAME)
 
     df = df.query("ymd >= '2020-01-01'")
     return df

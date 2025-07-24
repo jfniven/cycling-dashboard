@@ -99,16 +99,25 @@ fig_total_counts = px.bar(df_plot, x=x_var, y="total_trips")
 
 # Axis formatting
 fig_total_counts.update_layout(
-    xaxis=dict(
-        title=dict(text =x_label,
-        font=dict(size = 20)),
-        tickfont_size=20,
-        tickangle=0,
-    ),
-    yaxis=dict(
-        title=dict(text = f"Overall {date_format.lower()} count",
-        font= dict(size = 20),
-        tickfont_size=20,
+    dict(
+        xaxis=dict(
+            title=dict(
+                text =x_label,
+                font=dict(
+                    size = 20
+                )
+            ),
+        # tickfont_size=20,
+        # tickangle=0,
+        ),
+        yaxis=dict(
+            title=dict(
+                text = f"Overall {date_format.lower()} count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+        # tickfont_size=20,
     ),
     autosize=False,
     width=1000,

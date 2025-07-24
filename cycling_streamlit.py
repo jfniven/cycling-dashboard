@@ -1,4 +1,4 @@
-import streamlit as st
+=import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pathlib import Path
@@ -135,12 +135,12 @@ config = {
     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
 }
 
-col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+# col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 
-with col2:
-    st.plotly_chart(
-        fig_total_counts, on_select="ignore", use_container_width=True, config=config
-    )
+# with col2:
+#     st.plotly_chart(
+#         fig_total_counts, on_select="ignore", use_container_width=True, config=config
+#     )
 
 #########################################################################################
 # Temperature
@@ -199,10 +199,10 @@ config = {
 
 col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 
-with col2:
-    st.plotly_chart(
-        fig_temp_counts, on_select="ignore", use_container_width=True, config=config
-    )
+# with col2:
+#     st.plotly_chart(
+#         fig_temp_counts, on_select="ignore", use_container_width=True, config=config
+#     )
 
 # # ##########################################################################################
 # # # Rain
@@ -301,8 +301,6 @@ st.divider()
 
 st.subheader(f"Counter histories")
 
-
-
 fig_histories = px.scatter(
     df_channel_ymd.query("total_trips>0"), x="ymd", y="channel", color="channel",color_discrete_map=channel_color_dict
 )
@@ -357,13 +355,6 @@ config = {
         "scale": 5,
     }
 }
-
-col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
-
-with col2:
-    st.plotly_chart(
-        fig_histories, on_select="ignore", use_container_width=True, config=config
-    )
 ##########################################################################################
 
 st.divider()
@@ -444,8 +435,16 @@ config = {
     }
 }
 
-col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+col1, col2 = st.columns(2)
 
+with col1:
+    st.plotly_chart(
+        fig_histories, 
+        on_select="ignore", 
+        use_container_width=True, 
+        config=config
+    )
+    
 with col2:
     st.plotly_chart(
         fig_total_counts_channel,

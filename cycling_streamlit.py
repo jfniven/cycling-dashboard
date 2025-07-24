@@ -705,49 +705,45 @@ with col1:
 # MEAN HOURLY PERCENTAGES
 df_channel_hour = df.query("channel == @selected_channel & ym >= '2024-07'")
 
-with col2:
+option_map = {
+    1: "Monday",
+    2: "Tuesday",
+    3: "Wednesday",
+    4: "Thursday",
+    5: "Friday",
+    6: "Saturday",
+    7: "Sunday",
+}
+selected_days = st.pills(
+    "Select day(s) of the week",
+    options=option_map.keys(),
+    format_func=lambda option: option_map[option],
+    selection_mode="multi",
+    default=[1, 2, 3, 4, 5],
+)
 
-    st.subheader("Average percent of daily count by hour of day")
+df_hour_sum = (
+    df_channel_hour.query("weekday in @selected_days")
+    .groupby(by=["y", "weekday", "hour", "direction"], as_index=False)
+    .agg(total_trips=("trips", "sum"))
+)
 
-    option_map = {
-        1: "Monday",
-        2: "Tuesday",
-        3: "Wednesday",
-        4: "Thursday",
-        5: "Friday",
-        6: "Saturday",
-        7: "Sunday",
-    }
-    selected_days = st.pills(
-        "Select day(s) of the week",
-        options=option_map.keys(),
-        format_func=lambda option: option_map[option],
-        selection_mode="multi",
-        default=[1, 2, 3, 4, 5],
-    )
+# Don't want to group by direction, want to normalize to total number of trips (both directions). This highlights routes with asymmetric counts.
+df_hour_sum["hourly_percent"] = df_hour_sum.groupby(by=["weekday"])[
+    "total_trips"
+].transform(lambda x: x / x.sum())
 
-    df_hour_sum = (
-        df_channel_hour.query("weekday in @selected_days")
-        .groupby(by=["y", "weekday", "hour", "direction"], as_index=False)
-        .agg(total_trips=("trips", "sum"))
-    )
+df_hour_mean = df_hour_sum.groupby(by=["direction", "hour"], as_index=False).agg(
+    hourly_mean=("hourly_percent", "mean")
+)
 
-    # Don't want to group by direction, want to normalize to total number of trips (both directions). This highlights routes with asymmetric counts.
-    df_hour_sum["hourly_percent"] = df_hour_sum.groupby(by=["weekday"])[
-        "total_trips"
-    ].transform(lambda x: x / x.sum())
-
-    df_hour_mean = df_hour_sum.groupby(by=["direction", "hour"], as_index=False).agg(
-        hourly_mean=("hourly_percent", "mean")
-    )
-
-    fig_hourly = px.line(
-        df_hour_mean,
-        x="hour",
-        y="hourly_mean",
-        markers=True,
-        color="direction",
-    )
+fig_hourly = px.line(
+df_hour_mean,
+x="hour",
+y="hourly_mean",
+markers=True,
+color="direction",
+)
 
 # Axis formatting
 fig_total_counts.update_layout(
@@ -804,6 +800,8 @@ fig_total_counts.update_layout(
     )
 )
 
+with col2:
+    st.subheader("Average percent of daily count by hour of day")
     st.plotly_chart(fig_hourly, on_select="ignore")
 
 # ##############################

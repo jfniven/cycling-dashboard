@@ -68,7 +68,7 @@ channels = sorted(df.channel.unique().tolist())
 channel_color_dict = dict(zip(channels,px.colors.qualitative.Alphabet[0:len(channels)]))
 
 ####### Plots
-st.subheader(f"Overall network counts")
+# st.subheader(f"Overall network counts")
 
 date_format = st.radio(
     "Select date group format",
@@ -146,11 +146,11 @@ config = {
 # Temperature
 
 ####### Plots
-st.divider()
+# st.divider()
 
-st.subheader(
-    f"Overall daily count vs. mean daily temperature (days with no precipitation)"
-)
+# st.subheader(
+#     f"Overall daily count vs. mean daily temperature (days with no precipitation)"
+# )
 
 fig_temp_counts = px.scatter(
     df_combined_ymd.query(
@@ -197,7 +197,7 @@ config = {
     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
 }
 
-col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+# col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 
 # with col2:
 #     st.plotly_chart(
@@ -299,7 +299,7 @@ col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 ##########################################################################################
 st.divider()
 
-st.subheader(f"Counter histories")
+st.subheader(f"Network history")
 
 fig_histories = px.scatter(
     df_channel_ymd.query("total_trips>0"), x="ymd", y="channel", color="channel",color_discrete_map=channel_color_dict
@@ -356,10 +356,6 @@ config = {
     }
 }
 ##########################################################################################
-
-st.divider()
-
-st.subheader(f"Route totals")
 
 date_format = st.radio(
     "Select date group format",
@@ -435,16 +431,19 @@ config = {
     }
 }
 
-col1, col2 = st.columns(2)
 
-with col1:
+col1, col2, col3 = st.columns([0.1,0.8,0.1])
+
+with col2:
     st.plotly_chart(
         fig_histories, 
         on_select="ignore", 
         use_container_width=True, 
         config=config
     )
-    
+
+col1, col2, col3 = st.columns([0.1,0.8,0.1])
+
 with col2:
     st.plotly_chart(
         fig_total_counts_channel,

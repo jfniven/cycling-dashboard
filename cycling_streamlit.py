@@ -3,11 +3,7 @@ import pandas as pd
 import plotly.express as px
 from pathlib import Path
 
-folder = "/Users/johnniven/Documents/Home/Python/Cycling Counter/"
-
 st.set_page_config(layout="wide")
-
-
 
 @st.cache_data
 def get_data():

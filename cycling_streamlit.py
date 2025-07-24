@@ -138,54 +138,54 @@ with col2:
         fig_total_counts, on_select="ignore", use_container_width=True, config=config
     )
 
-##########################################################################################
-# # Temperature
+#########################################################################################
+# Temperature
 
-# ####### Plots
-# st.divider()
+####### Plots
+st.divider()
 
-# st.subheader(
-#     f"Overall daily count vs. mean daily temperature (days with no precipitation)"
-# )
+st.subheader(
+    f"Overall daily count vs. mean daily temperature (days with no precipitation)"
+)
 
-# fig_temp_counts = px.scatter(
-#     df_combined_ymd.query(
-#         "y>= 2024 & total_rain == 0 & total_snow == 0 & total_precip == 0 & snow_on_ground == 0"
-#     ),
-#     x="mean_temp",
-#     y="total_trips",
-# )
+fig_temp_counts = px.scatter(
+    df_combined_ymd.query(
+        "y>= 2024 & total_rain == 0 & total_snow == 0 & total_precip == 0 & snow_on_ground == 0"
+    ),
+    x="mean_temp",
+    y="total_trips",
+)
 
-# # Axis formatting
-# fig_temp_counts.update_layout(
-#     xaxis=dict(
-#         title="Mean daily temperature",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=0,
-#     ),
-#     yaxis=dict(
-#         title=f"Overall daily count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#     ),
-#     autosize=False,
-#     width=1000,
-#     height=600,
-#     margin=dict(l=0, r=0, t=0, b=0),
-#     font_color="black",
-# )
+# Axis formatting
+fig_temp_counts.update_layout(
+    xaxis=dict(
+        title="Mean daily temperature",
+        titlefont_size=20,
+        tickfont_size=20,
+        tickangle=0,
+    ),
+    yaxis=dict(
+        title=f"Overall daily count",
+        titlefont_size=20,
+        tickfont_size=20,
+    ),
+    autosize=False,
+    width=1000,
+    height=600,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+)
 
-# config = {
-#     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
-# }
+config = {
+    "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
+}
 
-# col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 
-# with col2:
-#     st.plotly_chart(
-#         fig_temp_counts, on_select="ignore", use_container_width=True, config=config
-#     )
+with col2:
+    st.plotly_chart(
+        fig_temp_counts, on_select="ignore", use_container_width=True, config=config
+    )
 
 # # ##########################################################################################
 # # # Rain
@@ -801,13 +801,13 @@ with st.sidebar:
 
     st.subheader(f"Data updated {max_date}")
 
-    st.download_button(
-        label="Download data",
-        data=csv,
-        file_name=f"daily_cycling_counts_{max_date}.csv",
-        mime="text/csv",
-        icon=":material/download:",
-    )
+    # st.download_button(
+    #     label="Download data",
+    #     data=csv,
+    #     file_name=f"daily_cycling_counts_{max_date}.csv",
+    #     mime="text/csv",
+    #     icon=":material/download:",
+    # )
 
     st.markdown(
         "[View raw data](https://catalogue-hrm.opendata.arcgis.com/datasets/45d4ecb0cb48469186e683ebc54eb188_0/explore)"

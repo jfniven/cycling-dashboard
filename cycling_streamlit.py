@@ -133,7 +133,7 @@ channel_color_dict = dict(zip(channels,px.colors.qualitative.Alphabet[0:len(chan
 # config = {
 #     'staticPlot': True,
 #     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
-}
+# }
 
 # col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 

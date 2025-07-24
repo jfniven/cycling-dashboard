@@ -1,0 +1,8 @@
+[theme]
+base="light"
+secondaryBackgroundColor="#1846a2"
+primaryColor="forestGreen"
+
+[theme.sidebar]
+backgroundColor="ghostWhite"
+primaryColor="darkGoldrod"

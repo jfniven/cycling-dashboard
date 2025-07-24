@@ -714,13 +714,15 @@ option_map = {
     6: "Saturday",
     7: "Sunday",
 }
-selected_days = st.pills(
-    "Select day(s) of the week",
-    options=option_map.keys(),
-    format_func=lambda option: option_map[option],
-    selection_mode="multi",
-    default=[1, 2, 3, 4, 5],
-)
+
+with col2:
+    selected_days = st.pills(
+        "Select day(s) of the week",
+        options=option_map.keys(),
+        format_func=lambda option: option_map[option],
+        selection_mode="multi",
+        default=[1, 2, 3, 4, 5],
+    )
 
 df_hour_sum = (
     df_channel_hour.query("weekday in @selected_days")

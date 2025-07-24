@@ -108,6 +108,9 @@ fig_total_counts.update_layout(
                 )
             ),
             tickangle = 20,
+            tickfont = dict(
+                size = 20
+            ),
         ),
         yaxis=dict(
             title=dict(

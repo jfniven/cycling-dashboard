@@ -822,7 +822,7 @@ fig_temp_counts = px.scatter(
 )
 
 # Axis formatting
-fig_total_counts.update_layout(
+fig_temp_counts.update_layout(
     dict(
         xaxis=dict(
             title=dict(

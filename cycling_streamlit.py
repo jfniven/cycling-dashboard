@@ -716,6 +716,9 @@ option_map = {
 }
 
 with col2:
+
+    st.subheader("Average percent of daily count by hour of day") 
+    
     selected_days = st.pills(
         "Select day(s) of the week",
         options=option_map.keys(),
@@ -803,7 +806,6 @@ fig_total_counts.update_layout(
 )
 
 with col2:
-    st.subheader("Average percent of daily count by hour of day")
     st.plotly_chart(fig_hourly, on_select="ignore")
 
 # ##############################

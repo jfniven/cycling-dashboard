@@ -70,69 +70,69 @@ channel_color_dict = dict(zip(channels,px.colors.qualitative.Alphabet[0:len(chan
 ####### Plots
 # st.subheader(f"Overall network counts")
 
-date_format = st.radio(
-    "Select date group format",
-    ["Daily", "Monthly", "Yearly"],
-    key="count_totals",
-    index=1,
-    horizontal=True,
-)
+# date_format = st.radio(
+#     "Select date group format",
+#     ["Daily", "Monthly", "Yearly"],
+#     key="count_totals",
+#     index=1,
+#     horizontal=True,
+# )
 
-if date_format == "Daily":
-    df_plot = df_ymd
-    x_var = "ymd"
-    x_label = "Date"
-elif date_format == "Weekly":
-    df_plot = df_yw
-    x_var = "week"
-    x_label = "Week Number"
-elif date_format == "Monthly":
-    df_plot = df_ym
-    x_var = "ym"
-    x_label = "Month"
-else:
-    df_plot = df_y
-    x_var = "y"
-    x_label = "Year"
+# if date_format == "Daily":
+#     df_plot = df_ymd
+#     x_var = "ymd"
+#     x_label = "Date"
+# elif date_format == "Weekly":
+#     df_plot = df_yw
+#     x_var = "week"
+#     x_label = "Week Number"
+# elif date_format == "Monthly":
+#     df_plot = df_ym
+#     x_var = "ym"
+#     x_label = "Month"
+# else:
+#     df_plot = df_y
+#     x_var = "y"
+#     x_label = "Year"
 
-fig_total_counts = px.bar(df_plot, x=x_var, y="total_trips")
+# fig_total_counts = px.bar(df_plot, x=x_var, y="total_trips")
 
-# Axis formatting
-fig_total_counts.update_layout(
-    dict(
-        xaxis=dict(
-            title=dict(
-                text =x_label,
-                font=dict(
-                    size = 20
-                )
-            ),
-            tickfont = dict(
-                size = 20
-            ),
-        ),
-        yaxis=dict(
-            title=dict(
-                text = f"Overall {date_format.lower()} count",
-                font= dict(
-                    size = 20
-                ),
-            ),
-            tickfont = dict(
-                size = 20
-            ),
-    ),
-    autosize=False,
-    width=1000,
-    height=600,
-    margin=dict(l=0, r=0, t=0, b=0),
-    font_color="black",
-    )
-)
+# # Axis formatting
+# fig_total_counts.update_layout(
+#     dict(
+#         xaxis=dict(
+#             title=dict(
+#                 text =x_label,
+#                 font=dict(
+#                     size = 20
+#                 )
+#             ),
+#             tickfont = dict(
+#                 size = 20
+#             ),
+#         ),
+#         yaxis=dict(
+#             title=dict(
+#                 text = f"Overall {date_format.lower()} count",
+#                 font= dict(
+#                     size = 20
+#                 ),
+#             ),
+#             tickfont = dict(
+#                 size = 20
+#             ),
+#     ),
+#     autosize=False,
+#     width=1000,
+#     height=600,
+#     margin=dict(l=0, r=0, t=0, b=0),
+#     font_color="black",
+#     )
+# )
 
-config = {
-    'staticPlot': True,
-    "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
+# config = {
+#     'staticPlot': True,
+#     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
 }
 
 # col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
@@ -152,50 +152,50 @@ config = {
 #     f"Overall daily count vs. mean daily temperature (days with no precipitation)"
 # )
 
-fig_temp_counts = px.scatter(
-    df_combined_ymd.query(
-        "y>= 2024 & total_rain == 0 & total_snow == 0 & total_precip == 0 & snow_on_ground == 0"
-    ),
-    x="mean_temp",
-    y="total_trips",
-)
+# fig_temp_counts = px.scatter(
+#     df_combined_ymd.query(
+#         "y>= 2024 & total_rain == 0 & total_snow == 0 & total_precip == 0 & snow_on_ground == 0"
+#     ),
+#     x="mean_temp",
+#     y="total_trips",
+# )
 
-# Axis formatting
-fig_temp_counts.update_layout(
-    dict(
-        xaxis=dict(
-            title=dict(
-                text = "Mean daily temperature",
-                font=dict(
-                    size = 20
-                )
-            ),
-            tickfont = dict(
-                size = 20
-            ),
-        ),
-        yaxis=dict(
-            title=dict(
-                text = f"Overall daily count",
-                font= dict(
-                    size = 20
-                ),
-            ),
-            tickfont = dict(
-                size = 20
-            ),
-    ),
-    autosize=False,
-    width=1000,
-    height=600,
-    margin=dict(l=0, r=0, t=0, b=0),
-    font_color="black",
-    )
-)
+# # Axis formatting
+# fig_temp_counts.update_layout(
+#     dict(
+#         xaxis=dict(
+#             title=dict(
+#                 text = "Mean daily temperature",
+#                 font=dict(
+#                     size = 20
+#                 )
+#             ),
+#             tickfont = dict(
+#                 size = 20
+#             ),
+#         ),
+#         yaxis=dict(
+#             title=dict(
+#                 text = f"Overall daily count",
+#                 font= dict(
+#                     size = 20
+#                 ),
+#             ),
+#             tickfont = dict(
+#                 size = 20
+#             ),
+#     ),
+#     autosize=False,
+#     width=1000,
+#     height=600,
+#     margin=dict(l=0, r=0, t=0, b=0),
+#     font_color="black",
+#     )
+# )
 
-config = {
-    "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
-}
+# config = {
+#     "toImageButtonOptions": {"format": "png", "filename": "count_totals", "scale": 5}
+# }
 
 # col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
 
@@ -368,6 +368,10 @@ with col2:
 
 
 ##########################################################################################
+
+st.divider()
+
+st.subheader(f"Route counts")
 
 date_format = st.radio(
     "Select date group format",

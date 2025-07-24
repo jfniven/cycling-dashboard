@@ -70,13 +70,13 @@ channel_color_dict = dict(zip(channels,px.colors.qualitative.Alphabet[0:len(chan
 ####### Plots
 # st.subheader(f"Overall network counts")
 
-date_format = st.radio(
-    "Select date group format",
-    ["Daily", "Monthly", "Yearly"],
-    key="count_totals",
-    index=1,
-    horizontal=True,
-)
+# date_format = st.radio(
+#     "Select date group format",
+#     ["Daily", "Monthly", "Yearly"],
+#     key="count_totals",
+#     index=1,
+#     horizontal=True,
+# )
 
 if date_format == "Daily":
     df_plot = df_ymd
@@ -355,6 +355,18 @@ config = {
         "scale": 5,
     }
 }
+
+col1, col2, col3 = st.columns([0.1,0.8,0.1])
+
+with col2:
+    st.plotly_chart(
+        fig_histories, 
+        on_select="ignore", 
+        use_container_width=True, 
+        config=config
+    )
+
+
 ##########################################################################################
 
 date_format = st.radio(
@@ -430,17 +442,6 @@ config = {
         "scale": 5,
     }
 }
-
-
-col1, col2, col3 = st.columns([0.1,0.8,0.1])
-
-with col2:
-    st.plotly_chart(
-        fig_histories, 
-        on_select="ignore", 
-        use_container_width=True, 
-        config=config
-    )
 
 col1, col2, col3 = st.columns([0.1,0.8,0.1])
 

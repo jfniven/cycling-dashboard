@@ -1,2 +1,2 @@
 pandas
-plotly.express
+plotly == 6.2.0

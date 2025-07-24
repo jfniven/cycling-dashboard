@@ -295,167 +295,181 @@ with col2:
 # #         fig_snwgnd_counts, on_select="ignore", use_container_width=True, config=config
 # #     )
 
-# ##########################################################################################
-# st.divider()
+##########################################################################################
+st.divider()
 
-# st.subheader(f"Counter histories")
-
-
-
-# fig_histories = px.scatter(
-#     df_channel_ymd.query("total_trips>0"), x="ymd", y="channel", color="channel",color_discrete_map=channel_color_dict
-# )
-
-# # Axis formatting
-# fig_histories.update_layout(
-#     xaxis=dict(
-#         title="Date",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=0,
-#         tickformat="%b\n%Y",
-#     ),
-#     yaxis=dict(
-#         title=f"Counter",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#     ),
-#     showlegend=False,
-#     autosize=False,
-#     width=1000,
-#     height=600,
-#     margin=dict(l=0, r=0, t=0, b=0),
-#     font_color="black",
-# )
-
-# config = {
-#     "toImageButtonOptions": {
-#         "format": "png",
-#         "filename": "counter_histories",
-#         "scale": 5,
-#     }
-# }
-
-# col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
-
-# with col2:
-#     st.plotly_chart(
-#         fig_histories, on_select="ignore", use_container_width=True, config=config
-#     )
-# ##########################################################################################
-
-# st.divider()
-
-# st.subheader(f"Route totals")
-
-# date_format = st.radio(
-#     "Select date group format",
-#     ["Daily", "Monthly", "Yearly"],
-#     key="channel_totals",
-#     index=1,
-#     horizontal=True,
-# )
-
-# if date_format == "Daily":
-#     df_plot = df_channel_ymd
-#     x_var = "ymd"
-#     x_label = "Date"
-# elif date_format == "Weekly":
-#     df_plot = df_channel_yw
-#     x_var = "week"
-#     x_label = "Week Number"
-# elif date_format == "Monthly":
-#     df_plot = df_channel_ym
-#     x_var = "ym"
-#     x_label = "Month"
-# else:
-#     df_plot = df_channel_y
-#     x_var = "y"
-#     x_label = "Year"
-
-# fig_total_counts_channel = px.line(
-#     df_plot,
-#     x=x_var,
-#     y="total_trips",
-#     color="channel",
-#     color_discrete_map=channel_color_dict
-# )
-
-# # Axis formatting
-# fig_total_counts_channel.update_layout(
-#     xaxis=dict(
-#         title=x_label,
-#         titlefont_size=20,
-#         tickfont_size=20,
-#         tickangle=0,
-#     ),
-#     yaxis=dict(
-#         title=f"Total {date_format.lower()} count",
-#         titlefont_size=20,
-#         tickfont_size=20,
-#     ),
-#     autosize=False,
-#     width=800,
-#     height=600,
-#     showlegend=True,
-#     legend=dict(
-#         title=dict(text="Route", font_size=20),
-#         yanchor="top",
-#         y=1,
-#         xanchor="left",
-#         x=1,
-#         font=dict(size=16),
-#     ),
-#     # margin=dict(l=40, r=40, t=100, b=40),
-#     # font_family="Open Sans",
-#     font_color="black",
-# )
-
-# config = {
-#     "toImageButtonOptions": {
-#         "format": "png",
-#         "filename": "all_route_totals",
-#         "scale": 5,
-#     }
-# }
-
-# col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
-
-# with col2:
-#     st.plotly_chart(
-#         fig_total_counts_channel,
-#         on_select="ignore",
-#         use_container_width=True,
-#         config=config,
-#     )
-
-# st.divider()
-# ######### Channel plot
-# st.header(f"Individual counters")
+st.subheader(f"Counter histories")
 
 
-# col1, col2, col3 = st.columns(3)
 
-# with col1:
-#     selected_channel = st.selectbox("Select a route", channels, index=1)
+fig_histories = px.scatter(
+    df_channel_ymd.query("total_trips>0"), x="ymd", y="channel", color="channel",color_discrete_map=channel_color_dict
+)
 
-#     st.subheader("Counter history")
-#     date_format_channel = st.radio(
-#         "Select date group format",
-#         ["Daily ", "Monthly ", "Yearly "],
-#         index=1,
-#         horizontal=True,
-#     )
+# Axis formatting
+fig_histories.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text = "Date",
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+            tickformat="%b\n%Y",
+        ),
+        yaxis=dict(
+            title=dict(
+                text = "Counter",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+    ),
+    autosize=False,
+    width=1000,
+    height=600,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
 
-# if date_format_channel == "Daily ":
-#     df_channel = df_channel_ymd.query("channel == @selected_channel")
-#     x_var = "ymd"
-# elif date_format_channel == "Monthly ":
-#     df_channel = df_channel_ym.query("channel == @selected_channel")
-#     x_var = "ym"
-# else:
-#     df_channel = df_channel_y.query("channel == @selected_channel")
-#     x_var = "y"
+config = {
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "counter_histories",
+        "scale": 5,
+    }
+}
+
+col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+
+with col2:
+    st.plotly_chart(
+        fig_histories, on_select="ignore", use_container_width=True, config=config
+    )
+##########################################################################################
+
+st.divider()
+
+st.subheader(f"Route totals")
+
+date_format = st.radio(
+    "Select date group format",
+    ["Daily", "Monthly", "Yearly"],
+    key="channel_totals",
+    index=1,
+    horizontal=True,
+)
+
+if date_format == "Daily":
+    df_plot = df_channel_ymd
+    x_var = "ymd"
+    x_label = "Date"
+elif date_format == "Weekly":
+    df_plot = df_channel_yw
+    x_var = "week"
+    x_label = "Week Number"
+elif date_format == "Monthly":
+    df_plot = df_channel_ym
+    x_var = "ym"
+    x_label = "Month"
+else:
+    df_plot = df_channel_y
+    x_var = "y"
+    x_label = "Year"
+
+fig_total_counts_channel = px.line(
+    df_plot,
+    x=x_var,
+    y="total_trips",
+    color="channel",
+    color_discrete_map=channel_color_dict
+)
+
+# Axis formatting
+fig_total_counts_channel.update_layout(
+    dict(
+        xaxis=dict(
+            title=dict(
+                text =x_label,
+                font=dict(
+                    size = 20
+                )
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+        ),
+        yaxis=dict(
+            title=dict(
+                text = f"Total {date_format.lower()} count",
+                font= dict(
+                    size = 20
+                ),
+            ),
+            tickfont = dict(
+                size = 20
+            ),
+    ),
+    autosize=False,
+    width=1000,
+    height=600,
+    margin=dict(l=0, r=0, t=0, b=0),
+    font_color="black",
+    )
+)
+
+config = {
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "all_route_totals",
+        "scale": 5,
+    }
+}
+
+col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+
+with col2:
+    st.plotly_chart(
+        fig_total_counts_channel,
+        on_select="ignore",
+        use_container_width=True,
+        config=config,
+    )
+
+st.divider()
+######### Channel plot
+st.header(f"Individual counters")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    selected_channel = st.selectbox("Select a route", channels, index=1)
+
+    st.subheader("Counter history")
+    date_format_channel = st.radio(
+        "Select date group format",
+        ["Daily ", "Monthly ", "Yearly "],
+        index=1,
+        horizontal=True,
+    )
+
+if date_format_channel == "Daily ":
+    df_channel = df_channel_ymd.query("channel == @selected_channel")
+    x_var = "ymd"
+elif date_format_channel == "Monthly ":
+    df_channel = df_channel_ym.query("channel == @selected_channel")
+    x_var = "ym"
+else:
+    df_channel = df_channel_y.query("channel == @selected_channel")
+    x_var = "y"
 
 # fig_channel_counts = px.bar(
 #     df_channel,

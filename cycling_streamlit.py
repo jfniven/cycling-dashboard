@@ -107,9 +107,7 @@ fig_total_counts.update_layout(
                     size = 20
                 )
             ),
-            tick = dict(
-                angle = 20
-            ),
+            tickangle = 20,
         ),
         yaxis=dict(
             title=dict(
@@ -117,11 +115,6 @@ fig_total_counts.update_layout(
                 font= dict(
                     size = 20
                 ),
-            ),
-            tick = dict(
-                font = dict(
-                    size = 20
-                )
             ),
     ),
     autosize=False,
